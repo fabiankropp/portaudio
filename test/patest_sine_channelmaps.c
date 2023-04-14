@@ -49,7 +49,7 @@
 #include <math.h>
 #include "portaudio.h"
 
-#ifdef __APPLE__
+#if PA_USE_COREAUDIO
 #include "pa_mac_core.h"
 #endif
 
@@ -109,7 +109,7 @@ int main(void)
     PaStream *stream;
     PaError err;
     paTestData data;
-#ifdef __APPLE__
+#if PA_USE_COREAUDIO
     PaMacCoreStreamInfo macInfo;
     const SInt32 channelMap[4] = { -1, -1, 0, 1 };
 #endif
@@ -130,7 +130,7 @@ int main(void)
     if( err != paNoError ) goto error;
 
     /** setup host specific info */
-#ifdef __APPLE__
+#if PA_USE_COREAUDIO
     PaMacCore_SetupStreamInfo( &macInfo, paMacCorePlayNice );
     PaMacCore_SetupChannelMap( &macInfo, channelMap, 4 );
 
@@ -148,7 +148,7 @@ int main(void)
     outputParameters.channelCount = 2;       /* stereo output */
     outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
     outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
-#ifdef __APPLE__
+#if PA_USE_COREAUDIO
     outputParameters.hostApiSpecificStreamInfo = &macInfo;
 #else
     outputParameters.hostApiSpecificStreamInfo = NULL;

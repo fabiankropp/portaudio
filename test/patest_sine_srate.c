@@ -50,7 +50,7 @@
 #include <math.h>
 #include "portaudio.h"
 
-#ifdef __APPLE__
+#if PA_USE_COREAUDIO
 #include "pa_mac_core.h"
 #endif
 
@@ -111,7 +111,7 @@ int main(void)
     PaStream *stream;
     PaError err;
     paTestData data;
-#ifdef __APPLE__
+#if PA_USE_COREAUDIO
     PaMacCoreStreamInfo macInfo;
 #endif
     int i;
@@ -138,7 +138,7 @@ int main(void)
         outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
         outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
         /** setup host specific info */
-#ifdef __APPLE__
+#if PA_USE_COREAUDIO
         PaMacCore_SetupStreamInfo( &macInfo, paMacCorePro );
         outputParameters.hostApiSpecificStreamInfo = &macInfo;
 #else
